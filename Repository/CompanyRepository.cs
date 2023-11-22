@@ -1,12 +1,6 @@
 ﻿using Contracts;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -24,5 +18,10 @@ namespace Repository
 
         public async Task<Company> GetCompany(Guid companyId, bool trackChanges) => 
             await GetByCondition(c => c.Id.Equals(companyId), trackChanges).SingleOrDefaultAsync();
+
+        public async Task CreateCompany(Company company) => Create(company);
+
+        public async Task<IEnumerable<Company>> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
+            await GetByCondition(c => ids.Contains(c.Id), trackChanges).ToListAsync();
     }
 }
