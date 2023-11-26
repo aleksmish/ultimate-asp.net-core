@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
 
@@ -26,9 +27,18 @@ namespace Service.Contracts
         Task SaveChangesForPatchAsync(EmployeeForUpdateDTO employeeForUpdate, Employee employee);
     }
 
+    public interface IAuthenticationService
+    {
+        Task<IdentityResult> RegisterUser(UserForRegistrationDTO userForRegistration);
+        Task<bool> ValidateUser(UserForAuthenticationDTO userForAuth);
+        Task<TokenDTO> CreateToken(bool populateExp);
+        Task<TokenDTO> RefreshToken(TokenDTO tokenDTO);
+    }
+
     public interface IServiceManager
     {
         ICompanyService CompanyService { get; }
         IEmployeeService EmployeeService { get; }
+        IAuthenticationService AuthenticationService { get; }
     }
 }
